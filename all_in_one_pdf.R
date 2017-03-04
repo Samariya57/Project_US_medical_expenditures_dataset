@@ -11,17 +11,17 @@ final<-aggregate(cbind(dt$Average.Covered.Charges,dt$Average.Total.Payments),
                  by=list(dt$DRG.Definition,dt$Provider.State), FUN="mean")
 
 #Plotting. For every different state we create seperate plot in corresponding file
-par(mfrow=c(1,1))
+par(mfrow=c(3,2))
 for (i in unique(final$Group.2)){
-    plot.new()
-    with (subset(final, final$Group.2==i), 
-          {plot (V1,V2, col=unique(Group.1), main=i, xlab="Average Covered Charges", 
-                ylab="Average Total Payments" )
+  with (subset(final, final$Group.2==i), 
+        {plot (V1,V2, col=unique(Group.1), main=i, xlab="Average Covered Charges", 
+               ylab="Average Total Payments" )
           legend("topleft", col=unique(final$Group.1), 
-                   as.character(unique(final$Group.1)), lty=c(1,1) , cex=0.5)}
-          )
-    dev.copy2pdf( file=paste(i, ".pdf",sep=""), out.type = "pdf")
-    dev.off()
+                 as.character(unique(final$Group.1)), lty=c(1,1) , cex=0.3)}
+  )
+
 }
+dev.copy2pdf( file="All_states.pdf", out.type = "pdf")
+dev.off()
 
 
